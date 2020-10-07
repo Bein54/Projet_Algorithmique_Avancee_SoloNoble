@@ -14,6 +14,7 @@ public class Grille {
 	private int ligneTrou, colonneTrou, nbLignes, nbColonnes, numeroCas;
 	private boolean finFichier;
 	private File nouveauFichier;
+	private String[][] g;
 	
 	public Grille(File f) throws IOException {
 		this.ligneTrou = 0;
