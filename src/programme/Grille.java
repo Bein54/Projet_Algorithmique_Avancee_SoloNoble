@@ -10,73 +10,63 @@ import java.io.UnsupportedEncodingException;
 
 public class Grille {
 	
-	private File grille;
+	//private File grille;
 	private int ligneTrou, colonneTrou, nbLignes, nbColonnes, numeroCas;
-	private boolean finFichier;
-	private File nouveauFichier;
-	private String[][] g;
+	private boolean finGrille;
+	private String[][] nouvelleGrille;
+	private String[][] grille;
 	
 	public Grille(File f) throws IOException {
 		this.ligneTrou = 0;
 		this.colonneTrou = 0;
-		this.finFichier = false;
-		this.grille = f;
+		this.finGrille = false;
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String ligne;
+		int i = 0;
+		while ((ligne = br.readLine()) != null){
+			for (int j = 0; j < ligne.length(); j++) {
+				grille[i][j] = Character.toString(ligne.charAt(j));
+			}
+			i++;
+		}
+		br.close();
 		this.numeroCas = 0;
-		this.nouveauFichier = grille;
+		this.nouvelleGrille = grille;
 		this.calculerTaille();
 	}
 	
 	public Grille() throws IOException {
 		this.ligneTrou = 0;
 		this.colonneTrou = 0;
-		this.finFichier = false;
+		this.finGrille = false;
 		this.numeroCas = 0;
-		File f = new File("tablier_par_defaut.txt");
-		PrintWriter writer = new PrintWriter(f, "UTF-8");
-		writer.println("  ooo  ");
-		writer.println("  ooo  ");
-		writer.println("ooooooo");
-		writer.println("ooo.ooo");
-		writer.println("ooooooo");
-		writer.println("  ooo  ");
-		writer.println("  ooo  ");
-		writer.close();
-		this.grille = f;
-		this.calculerTaille();
-		this.nouveauFichier = grille;
-	}
-	
-	public void calculerTaille() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(this.grille));
-		int colonnes = br.readLine().length();
-		this.nbColonnes = colonnes;
-		int lignes = 1;
-		while (br.readLine() != null)
-			lignes++;
-		br.close();
-		this.nbLignes = lignes;
-	}
-	
-	public String trouverLigne(int ligne) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(this.grille));
+		BufferedReader br = new BufferedReader(new FileReader("grilles/tablier1.txt"));
+		String ligne;
 		int i = 0;
-		String res = br.readLine();
-		while (i != ligne) {
+		while ((ligne = br.readLine()) != null){
+			for (int j = 0; j < ligne.length(); j++) {
+				grille[i][j] = Character.toString(ligne.charAt(j));
+			}
 			i++;
-			res = br.readLine();
 		}
 		br.close();
-		return res;
+		this.calculerTaille();
+		this.nouvelleGrille = grille;
+	}
+	
+	public void calculerTaille(){
+		this.nbColonnes = this.grille[0].length;
+		this.nbLignes = this.grille.length;
 	}
 	
 	public void chercherTrou() throws IOException {
 		boolean trouve = false;
 		int i = 0;
 		while (i < this.nbLignes && !trouve) {
-			String ligne = this.trouverLigne(i);
+			String[] ligne = this.grille[i];
 			int j = 0;
 			while (j < this.nbColonnes && !trouve) {
-				if (ligne.charAt(j) == ('.')) {
+				if (ligne[j].equals(".")) {
 					trouve = true;
 					this.ligneTrou = i;
 					this.colonneTrou = j;
@@ -89,82 +79,111 @@ public class Grille {
 		}
 		
 		if (!trouve) {
-			this.finFichier = true;
+			this.finGrille = true;
 		}
 	}
 	
-	public File deplacerBille() throws IOException {
-		String ligne = this.trouverLigne(ligneTrou);
-		String s = "";
+	public String[][] deplacerBille() throws IOException {
+		String[] ligne = this.grille[ligneTrou];
+		String[] tab = new String[nbColonnes];
 		boolean deplacementReussi = false;
-		File f = this.grille;
-		if(ligne.charAt(colonneTrou+1)=='o' && ligne.charAt(nbColonnes+2)=='o' && numeroCas == 0) {
-			s = ligne.substring(0, colonneTrou-1);
-			s+="o";
-			s+=".";
-			s+=".";
-			s+=ligne.substring(colonneTrou+3);
-			
-			String[] tab = {s};
-			this.ecrireNouveauFichier(tab, ligneTrou);
+		if(ligne[colonneTrou+1].equals("o") && ligne[nbColonnes+2].equals("o") && numeroCas == 0) {
+			for (int i = 0; i <= colonneTrou-1; i++) {
+				tab[i] = ligne[i];
+			}
+			tab[colonneTrou] = "o";
+			tab[colonneTrou + 1] = ".";
+			tab[colonneTrou + 2] = ".";
+			for (int i = colonneTrou + 3; i < tab.length; i++) {
+				tab[i] = ligne[i];
+			}
+			String[][] t = {tab};
+			this.ecrireNouvelleGrille(t, ligneTrou);
 			numeroCas = 1;
 			deplacementReussi = true;
 		}
 		
-		else if(ligne.charAt(colonneTrou-1)=='o' && ligne.charAt(nbColonnes-2)=='o' && (numeroCas == 0 || numeroCas == 1)) {
-			s = ligne.substring(0, colonneTrou-3);
-			s+=".";
-			s+=".";
-			s+="o";
-			s+=ligne.substring(colonneTrou+1);
-			
-			String[] tab = {s};
-			this.ecrireNouveauFichier(tab, ligneTrou);
+		else if(ligne[colonneTrou-1].equals("o") && ligne[nbColonnes-2].equals("o") && (numeroCas == 0 || numeroCas == 1)) {
+			for (int i = 0; i <= colonneTrou-3; i++) {
+				tab[i] = ligne[i];
+			}
+			tab[colonneTrou - 2] = ".";
+			tab[colonneTrou - 1] = ".";
+			tab[colonneTrou] = "o";
+			for (int i = colonneTrou + 1; i < tab.length; i++) {
+				tab[i] = ligne[i];
+			}
+			String[][] t = {tab};
+			this.ecrireNouvelleGrille(t, ligneTrou);
 			numeroCas = 2;
 			deplacementReussi = true;
 		}
 		else {
-			String ligne1 = this.trouverLigne(ligneTrou-2);
-			String ligne2 = this.trouverLigne(ligneTrou-1);
-			String s1 = "";
-			String s2 = "";
-			if(ligne1.charAt(colonneTrou)=='o' && ligne2.charAt(colonneTrou)=='o' && (numeroCas != 3 && numeroCas != 4)) {
-				s1 = ligne1.substring(0, colonneTrou-1);
-				s1+=".";
-				s1+=ligne1.substring(colonneTrou+1);
+			String[] ligne1 = this.grille[ligneTrou-2];
+			String[] ligne2 = this.grille[ligneTrou-1];
+			String[] tab1 = new String[nbColonnes];
+			String[] tab2 = new String[nbColonnes];
+			if(ligne1[colonneTrou].equals("o") && ligne2[colonneTrou].equals("o") && (numeroCas != 3 && numeroCas != 4)) {
 				
-				s2 = ligne2.substring(0, colonneTrou-1);
-				s2+=".";
-				s2+=ligne2.substring(colonneTrou+1);
+				for (int i = 0; i <= colonneTrou-1; i++) {
+					tab1[i] = ligne[i];
+				}
+				tab1[colonneTrou] = ".";
+				for (int i = colonneTrou + 1; i < tab.length; i++) {
+					tab1[i] = ligne[i];
+				}
 				
-				s = ligne.substring(0, colonneTrou-1);
-				s+="o";
-				s+=ligne.substring(colonneTrou+1);
+				for (int i = 0; i <= colonneTrou-1; i++) {
+					tab2[i] = ligne[i];
+				}
+				tab2[colonneTrou] = ".";
+				for (int i = colonneTrou + 1; i < tab.length; i++) {
+					tab2[i] = ligne[i];
+				}
 				
-				String[] tab = {s1,s2,s};
-				this.ecrireNouveauFichier(tab, ligneTrou -2);
+				for (int i = 0; i <= colonneTrou-1; i++) {
+					tab[i] = ligne[i];
+				}
+				tab[colonneTrou] = "o";
+				for (int i = colonneTrou + 1; i < tab.length; i++) {
+					tab[i] = ligne[i];
+				}
+				String[][] t = {tab1, tab2, tab};
+				this.ecrireNouvelleGrille(t, ligneTrou -2);
 				numeroCas = 3;
 				deplacementReussi = true;
 			}
 			else {
-				ligne1 = this.trouverLigne(ligneTrou+1);
-				ligne2 = this.trouverLigne(ligneTrou+2);
+				ligne1 = this.grille[ligneTrou+1];
+				ligne2 = this.grille[ligneTrou+2];
 				
-				if(ligne1.charAt(colonneTrou)=='o' && ligne2.charAt(colonneTrou)=='o' && numeroCas != 4) {
-					s = ligne.substring(0, colonneTrou-1);
-					s+="o";
-					s+=ligne.substring(colonneTrou+1);
+				if(ligne1[colonneTrou].equals("o") && ligne2[colonneTrou].equals("o") && numeroCas != 4) {
+					for (int i = 0; i <= colonneTrou-1; i++) {
+						tab[i] = ligne[i];
+					}
+					tab[colonneTrou] = "o";
+					for (int i = colonneTrou + 1; i < tab.length; i++) {
+						tab[i] = ligne[i];
+					}
 					
-					s1 = ligne1.substring(0, colonneTrou-1);
-					s1+=".";
-					s1+=ligne1.substring(colonneTrou+1);
+					for (int i = 0; i <= colonneTrou-1; i++) {
+						tab1[i] = ligne[i];
+					}
+					tab1[colonneTrou] = ".";
+					for (int i = colonneTrou + 1; i < tab.length; i++) {
+						tab1[i] = ligne[i];
+					}
 					
-					s2 = ligne2.substring(0, colonneTrou-1);
-					s2+=".";
-					s2+=ligne2.substring(colonneTrou+1);
+					for (int i = 0; i <= colonneTrou-1; i++) {
+						tab2[i] = ligne[i];
+					}
+					tab2[colonneTrou] = ".";
+					for (int i = colonneTrou + 1; i < tab.length; i++) {
+						tab2[i] = ligne[i];
+					}
 					
-					String[] tab = {s,s1,s2};
-					this.ecrireNouveauFichier(tab, ligneTrou);
+					String[][] t = {tab, tab1, tab2};
+					this.ecrireNouvelleGrille(t, ligneTrou);
 					numeroCas = 4;
 					deplacementReussi = true;
 				}
@@ -174,54 +193,35 @@ public class Grille {
 			
 		}
 		
-		return nouveauFichier;
+		return this.nouvelleGrille;
 	}
 	
-	public File getGrille() {
+	public String[][] getGrille() {
 		return this.grille;
 	}
 	
-	public void ecrireNouveauFichier(String[] tab, int indiceDebut) throws IOException {
-		int i = 0;
-		File f = new File("nouveau_fichier");
-		PrintWriter writer = new PrintWriter(f, "UTF-8");
-		BufferedReader br = new BufferedReader(new FileReader(this.grille));
-		String ligne = br.readLine();
-		while (i != indiceDebut) {
-			writer.println(ligne);
-			ligne = br.readLine();
-			i++;
+	public void ecrireNouvelleGrille(String[][] tab, int indiceDebut) throws IOException {
+		for (int i = 0; i < indiceDebut; i++) {
+			this.nouvelleGrille[i] = this.grille[i];
 		}
-		
-		int posArret = i;
-		for (int ind = 0; i< tab.length; ind++) {
-			writer.println(tab[ind]);
+		int taille = tab.length;
+		for (int i = indiceDebut; i < taille; i++) {
+			this.nouvelleGrille[i] = tab[i-indiceDebut];
 		}
-		
-		while(i != posArret+tab.length) {
-			ligne = br.readLine();
-			i++;
+		for (int i = taille; i < this.grille.length; i++) {
+			this.nouvelleGrille[i] = this.grille[i];
 		}
-		
-		while(ligne != null) {
-			writer.println(ligne);
-			ligne = br.readLine();
-		}
-		
-		br.close();
-		writer.close();
-		this.nouveauFichier = f;
 	}
 	
 	public void ecrireSolution() throws IOException {
-		Grille g = new Grille();
+		/*Grille g = new Grille();
 		BufferedReader br = new BufferedReader(new FileReader(g.getGrille()));
 		String ligne;
 		while ((ligne = br.readLine()) != null){
 			// Afficher le contenu du fichier ligne par ligne
 			System.out.println (ligne);
 		}
-		br.close();
+		br.close();*/
 	}
 
 	public int getNbLignes() {
@@ -232,8 +232,8 @@ public class Grille {
 		return this.nbColonnes;
 	}
 	
-	public boolean getFinFichier() {
-		return this.finFichier;
+	public boolean getFinGrille() {
+		return this.finGrille;
 	}
 	
 	public int getNumeroCas() {

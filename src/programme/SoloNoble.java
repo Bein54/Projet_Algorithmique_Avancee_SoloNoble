@@ -33,14 +33,14 @@ public class SoloNoble {
 			this.tablier.ecrireSolution();
 		}
 		else {
-			File fichierActuel = this.tablier.getGrille();
+			String[][] grilleActuelle = this.tablier.getGrille();
 			boolean valide = false;
-			while ((!valide) && !this.tablier.getFinFichier()) {
+			while ((!valide) && !this.tablier.getFinGrille()) {
 				this.tablier.chercherTrou();
 				
-				if (!this.tablier.getFinFichier()) {
+				if (!this.tablier.getFinGrille()) {
 					while (tablier.getNumeroCas() != 4) {
-						File nouveauFichier = this.tablier.deplacerBille();
+						String[][] nouvelleGrille = this.tablier.deplacerBille();
 					}
 					this.tablier = new Grille(nouveauFichier);
 					valide = this.resoudreSoloNoble(billes -1);
