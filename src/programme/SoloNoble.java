@@ -62,5 +62,15 @@ public class SoloNoble {
 		else {
 			sn = new SoloNoble();
 		}
+		int nbBilles = sn.getTablier().calculerNbBilles();
+		sn.resoudreSoloNoble(nbBilles);
+	}
+
+	public Grille getTablier() {
+		return tablier;
+	}
+
+	public boolean isFinJeu() {
+		return finJeu;
 	}
 }

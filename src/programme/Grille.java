@@ -32,7 +32,8 @@ public class Grille {
 		br.close();
 		this.numeroCas = 0;
 		this.nouvelleGrille = grille;
-		this.calculerTaille();
+		this.nbColonnes = this.grille[0].length;
+		this.nbLignes = this.grille.length;
 	}
 	
 	public Grille() throws IOException {
@@ -50,13 +51,20 @@ public class Grille {
 			i++;
 		}
 		br.close();
-		this.calculerTaille();
+		this.nbColonnes = this.grille[0].length;
+		this.nbLignes = this.grille.length;
 		this.nouvelleGrille = grille;
 	}
 	
-	public void calculerTaille(){
-		this.nbColonnes = this.grille[0].length;
-		this.nbLignes = this.grille.length;
+	public int calculerNbBilles(){
+		int somme = 0;
+		for (int i = 0; i < grille.length; i++) {
+			for (int j = 0; j < grille[i].length; j++) {
+				if(grille[i][j].equals("o"))
+					somme++;
+			}
+		}
+		return somme;
 	}
 	
 	public void chercherTrou() throws IOException {
