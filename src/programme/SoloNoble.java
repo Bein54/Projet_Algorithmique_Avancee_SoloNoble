@@ -31,16 +31,11 @@ public class SoloNoble {
 	}
 	
 	
-<<<<<<< HEAD
-	public boolean resoudreSoloNoble(int billes){
-		
-		boolean grilleValide = true;
-		
-=======
+
+
 	public boolean resoudreSoloNoble(int billes) throws IOException {
-		boolean resultat = true;
+		boolean grilleValide = true;
 		File test = new File("test.txt");
->>>>>>> b7c431395eb73a822b74f7ce041e5337d9e767f9
 		if (billes == 1) {
 			this.ecrireSolution(1);
 		}
@@ -80,11 +75,8 @@ public class SoloNoble {
 						System.out.println(deplacementReussi);
 						grilleActuelle = this.tablier.getGrille();
 					}
-<<<<<<< HEAD
-=======
 					this.tablier = new Grille(test);
-					valide = this.resoudreSoloNoble(billes -1);
->>>>>>> b7c431395eb73a822b74f7ce041e5337d9e767f9
+					grilleValide = this.resoudreSoloNoble(billes -1);
 				}
 				
 				if (!deplacementReussi && !grilleValide) {
@@ -122,16 +114,12 @@ public class SoloNoble {
 		}
 		System.out.println(s);
 	}
-<<<<<<< HEAD
 	
 	
 
 	public HashMap<Integer, String[][]> getSolutions() {
 		return solutions;
 	}
-=======
-
->>>>>>> b7c431395eb73a822b74f7ce041e5337d9e767f9
 
 	public static void main(String[] args) throws IOException {
 		SoloNoble sn;
