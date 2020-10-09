@@ -9,68 +9,130 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeMap;
+
+
 
 public class SoloNoble {
 	
 	private Grille tablier;
-	private boolean finJeu;
+	private HashMap<Integer,String[][]> solutions;
 	
 	public SoloNoble(File f) throws IOException {
 		this.tablier = new Grille(f);
-		this.finJeu = false;
+		this.solutions = new HashMap<Integer, String[][]>();
 	}
 	
 	public SoloNoble() throws IOException {
 		this.tablier = new Grille();
-		this.finJeu = false;
+		this.solutions = new HashMap<Integer, String[][]>();
 	}
 	
 	
-	public boolean resoudreSoloNoble(int billes) throws IOException {
-		boolean resultat = true;
+	public boolean resoudreSoloNoble(int billes){
+		
+		boolean grilleValide = true;
+		
 		if (billes == 1) {
-			this.finJeu = true;
-			this.tablier.ecrireSolution();
+			this.ecrireSolution(1);
 		}
+		
 		else {
+			String[][] grilleDeBase = this.tablier.getGrille();
 			String[][] grilleActuelle = this.tablier.getGrille();
-			boolean valide = false;
-			while ((!valide) && !this.tablier.getFinGrille()) {
+			boolean deplacementReussi = false;
+			grilleValide = false;
+			
+			Grille nouvelleGrille = this.tablier;
+			
+			while ((!grilleValide) && !this.tablier.getFinGrille()) {
+				
 				this.tablier.chercherTrou();
 				
-				if (!this.tablier.getFinGrille()) {
-					while (tablier.getNumeroCas() != 4) {
-						String[][] nouvelleGrille = this.tablier.deplacerBille();
+				deplacementReussi = this.tablier.deplacerBille();
+				System.out.println(deplacementReussi);
+				grilleActuelle = this.tablier.getGrille();
+				for (int i = 0; i < grilleActuelle.length; i++) {
+					for (int j = 0; j < grilleActuelle[i].length; j++) {
+						System.out.print(grilleActuelle[i][j]);
 					}
-					this.tablier = new Grille(nouveauFichier);
-					valide = this.resoudreSoloNoble(billes -1);
+					System.out.println();
+				}
+
+				while (deplacementReussi && !grilleValide) {
+					this.tablier = new Grille(grilleActuelle);
+					
+					grilleValide = this.resoudreSoloNoble(billes - 1);
+					System.out.println(grilleValide);
+					
+					if (!grilleValide) {
+						
+						this.tablier.setGrille(grilleActuelle);
+						deplacementReussi = tablier.deplacerBille();
+						System.out.println(deplacementReussi);
+						grilleActuelle = this.tablier.getGrille();
+					}
 				}
 				
-				else {
-					resultat = false;
+				if (!deplacementReussi && !grilleValide) {
+					this.tablier.setGrille(grilleActuelle);
 				}
 			}
 			
+			if(!grilleValide) {
+				this.tablier.setGrille(grilleDeBase);
+			}
+			
+			else
+				this.ecrireSolution(billes);
+			
 		}
-		return resultat;
+		return grilleValide;
 	}
 	
+	private void ecrireSolution(int nbBilles) {
+		solutions.put(nbBilles, this.tablier.getGrille());
+	}
+	
+	private void ecrireToutesSolutions() {
+		String s = "";
+		Set<Integer> cle = this.solutions.keySet();
+		for (Integer elt : cle) {
+			String[][] tab = solutions.get(elt);
+			for (int i = 0; i < tab.length; i++) {
+				for (int j = 0; j < tab[i].length; j++) {
+					s+=tab[i][j];
+				}
+				s+="\n";
+			}
+			s+="\n\n";
+		}
+		System.out.println(s);
+	}
+	
+	
+
+	public HashMap<Integer, String[][]> getSolutions() {
+		return solutions;
+	}
+
 	public static void main(String[] args) throws IOException {
 		SoloNoble sn;
-		if (args[0] != null)
+		if (args.length > 0)
 			sn = new SoloNoble(new File(args[0]));
 		else {
 			sn = new SoloNoble();
 		}
 		int nbBilles = sn.getTablier().calculerNbBilles();
 		sn.resoudreSoloNoble(nbBilles);
+		sn.ecrireToutesSolutions();
 	}
+
+	
 
 	public Grille getTablier() {
 		return tablier;
-	}
-
-	public boolean isFinJeu() {
-		return finJeu;
 	}
 }
