@@ -28,6 +28,7 @@ public class SoloNoble {
 	
 	public boolean resoudreSoloNoble(int billes) throws IOException {
 		boolean resultat = true;
+		File test = new File("test.txt");
 		if (billes == 1) {
 			this.finJeu = true;
 			this.tablier.ecrireSolution();
@@ -42,7 +43,7 @@ public class SoloNoble {
 					while (tablier.getNumeroCas() != 4) {
 						String[][] nouvelleGrille = this.tablier.deplacerBille();
 					}
-					this.tablier = new Grille(nouveauFichier);
+					this.tablier = new Grille(test);
 					valide = this.resoudreSoloNoble(billes -1);
 				}
 				
@@ -54,7 +55,8 @@ public class SoloNoble {
 		}
 		return resultat;
 	}
-	
+
+
 	public static void main(String[] args) throws IOException {
 		SoloNoble sn;
 		if (args[0] != null)

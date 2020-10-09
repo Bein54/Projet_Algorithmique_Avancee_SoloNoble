@@ -222,14 +222,13 @@ public class Grille {
 	}
 	
 	public void ecrireSolution() throws IOException {
-		/*Grille g = new Grille();
-		BufferedReader br = new BufferedReader(new FileReader(g.getGrille()));
+		BufferedReader br = new BufferedReader(new FileReader("test.txt"));
 		String ligne;
 		while ((ligne = br.readLine()) != null){
 			// Afficher le contenu du fichier ligne par ligne
 			System.out.println (ligne);
 		}
-		br.close();*/
+		br.close();
 	}
 
 	public int getNbLignes() {
