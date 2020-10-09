@@ -337,15 +337,20 @@ public class Grille {
 		this.grille = nouvelleGrille;
 	}
 	
+<<<<<<< HEAD
 	public void ecrireSolution(){
 		/*Grille g = new Grille();
 		BufferedReader br = new BufferedReader(new FileReader(g.getGrille()));
+=======
+	public void ecrireSolution() throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+>>>>>>> b7c431395eb73a822b74f7ce041e5337d9e767f9
 		String ligne;
 		while ((ligne = br.readLine()) != null){
 			// Afficher le contenu du fichier ligne par ligne
 			System.out.println (ligne);
 		}
-		br.close();*/
+		br.close();
 	}
 
 	public int getNbLignes() {
