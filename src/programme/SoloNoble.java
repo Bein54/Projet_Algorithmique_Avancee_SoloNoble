@@ -2,7 +2,6 @@ package programme;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -34,38 +33,25 @@ public class SoloNoble {
 		
 		else {
 			System.out.println("Etape n°" + billes);
-			String[][] grilleDeBase = this.tablier.getGrille();
 			String[][] grilleActuelle = this.tablier.getGrille();
 			
-			Grille tablierDeBase = this.tablier;
 			Grille tablierActuel = this.tablier;
 			
 			boolean deplacementReussi = false;
 			grilleValide = false;
 			
+			System.out.println("FinGrilleTrou :"+this.tablier.getFinGrille());
 			this.tablier.chercherTrou();
-			Grille tablierTemporaire = this.tablier;
 			
 			while ((!grilleValide) && !this.tablier.getFinGrille()) {
 				
 				deplacementReussi = this.tablier.deplacerBille();
-				
-				//System.out.println(deplacementReussi);
-				
-				grilleActuelle = this.tablier.getGrille();
-				
-				/*for (int i = 0; i < grilleActuelle.length; i++) {
-					for (int j = 0; j < grilleActuelle[i].length; j++) {
-						System.out.print(grilleActuelle[i][j]);
-					}
-					System.out.println();
-				}*/
-				
-				
 
 				while (deplacementReussi && !grilleValide) {
 					
 					tablierActuel = this.tablier;
+					
+					grilleActuelle = this.tablier.getGrille();
 					
 					this.tablier = new Grille(grilleActuelle);
 					
@@ -73,31 +59,29 @@ public class SoloNoble {
 					
 					System.out.println("Fin de la grille : " + this.tablier.getFinGrille());
 					
-					//System.out.println(grilleValide);
+					System.out.println(grilleValide);
 					
 					if (!grilleValide) {
-						this.tablier = tablierActuel;
-						deplacementReussi = this.tablier.deplacerBille();
-						//System.out.println("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 						
-						grilleActuelle = this.tablier.getGrille();
+						if (this.tablier.getFinGrille()) {
+							this.tablier.setFinGrille(false);
+						}
+						this.tablier = tablierActuel;
+						
+						deplacementReussi = this.tablier.deplacerBille();
 						
 					}
 				}
 				
 				if (!grilleValide) {
-					this.tablier = tablierTemporaire;
 					this.tablier.chercherTrou();
-					tablierTemporaire = this.tablier;
 				}
 			}
-			System.out.println(grilleValide);
-			System.out.println(this.tablier.getFinGrille());
 			
-			if(grilleValide)
+			if(grilleValide) {
+				this.tablier = tablierActuel;
 				this.ecrireSolution(billes);
-			else
-				this.tablier = tablierDeBase;
+			}
 		}
 		return grilleValide;
 	}

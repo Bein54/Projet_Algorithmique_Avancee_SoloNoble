@@ -7,10 +7,8 @@ import java.io.IOException;
 
 public class Grille {
 	
-	//private File grille;
 	private int ligneTrou, colonneTrou, nbLignes, nbColonnes, numeroCas;
 	private boolean finGrille;
-	//private String[][] nouvelleGrile;
 	private String[][] grille;
 	
 	public Grille(File f) throws IOException {
@@ -30,7 +28,6 @@ public class Grille {
 		}
 		br.close();
 		this.numeroCas = 0;
-		//this.nouvelleGrille = grille;
 		this.nbColonnes = this.grille[0].length;
 		this.nbLignes = this.grille.length;
 	}
@@ -41,10 +38,8 @@ public class Grille {
 		this.finGrille = false;
 		this.numeroCas = 0;
 		this.grille = tab;
-		//System.out.println("taille de grille" + this.grille[0].length);
 		this.nbColonnes = this.grille[0].length;
 		this.nbLignes = this.grille.length;
-		//this.nouvelleGrille = grille;
 	}
 	
 	public Grille() throws IOException {
@@ -64,9 +59,8 @@ public class Grille {
 			i++;
 		}
 		br.close();
-		this.nbColonnes = dimensions[1];
-		this.nbLignes = dimensions[0];
-		//this.nouvelleGrille = grille;
+		this.nbColonnes = this.grille[0].length;
+		this.nbLignes = this.grille.length;
 	}
 	
 	public int[] calculerTailleGrille(File f) throws IOException {
@@ -85,7 +79,6 @@ public class Grille {
 			
 			tab[0] = i;
 			tab[1] = j;
-			//System.out.println(j);
 		}
 		
 		else {
@@ -163,32 +156,12 @@ public class Grille {
 				this.finGrille = true;
 			}
 		}
-		
-		if(ligneTrou == 4 && colonneTrou == 6) {
-			//System.out.println("YESSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-			//System.out.println(numeroCas);
-		}
-		
 	}
 	
 	public boolean deplacerBille(){
 		String[] ligne = this.grille[ligneTrou];
-		//System.out.println("colonneTrou :"+colonneTrou);
-		//String[] tab = new String[nbColonnes];
 		if (colonneTrou+2 < nbColonnes) {
-			//System.out.println("MouvementDroite");
 			if(ligne[colonneTrou+1].equals("o") && ligne[colonneTrou+2].equals("o") && (numeroCas == 0)) {
-				/*for (int i = 0; i <= colonneTrou-1; i++) {
-					tab[i] = ligne[i];
-				}
-				tab[colonneTrou] = "o";
-				tab[colonneTrou + 1] = ".";
-				tab[colonneTrou + 2] = ".";
-				for (int i = colonneTrou + 3; i < tab.length; i++) {
-					tab[i] = ligne[i];
-				}
-				String[][] t = {tab};
-				this.ecrireNouvelleGrille(t, ligneTrou);*/
 				
 				grille[ligneTrou][colonneTrou] = "o";
 				grille[ligneTrou][colonneTrou+1] = ".";
@@ -200,64 +173,26 @@ public class Grille {
 		if((colonneTrou-2)>=0) {
 			
 			if(ligne[colonneTrou-1].equals("o") && ligne[colonneTrou-2].equals("o") && (numeroCas == 0 || numeroCas == 1)) {
-				//System.out.println("MouvementGauche");
-				/*for (int i = 0; i <= colonneTrou-3; i++) {
-					tab[i] = ligne[i];
-				}
-				tab[colonneTrou - 2] = ".";
-				tab[colonneTrou - 1] = ".";
-				tab[colonneTrou] = "o";
-				for (int i = colonneTrou + 1; i < tab.length; i++) {
-					tab[i] = ligne[i];
-				}
-				String[][] t = {tab};
-				this.ecrireNouvelleGrille(t, ligneTrou);*/
 				
 				grille[ligneTrou][colonneTrou-2] = ".";
 				grille[ligneTrou][colonneTrou-1] = ".";
 				grille[ligneTrou][colonneTrou] = "o";
+				
 				numeroCas = 2;
 				return true;
 			}
 		}
 		
-			//String[] tab1 = new String[nbColonnes];
-			//String[] tab2 = new String[nbColonnes];
 			if ((ligneTrou-2>= 0) && ((colonneTrou-1>=0) )) {
 				String[] ligne1 = this.grille[ligneTrou-2];
 				String[] ligne2 = this.grille[ligneTrou-1];
-				//System.out.println("3OUIIIIIIIIIIIIII");
+				
 				if(ligne1[colonneTrou].equals("o") && ligne2[colonneTrou].equals("o") && (numeroCas != 3 && numeroCas != 4)) {
-					//System.out.println("MouvementHaut");
-					/*for (int i = 0; i <= colonneTrou-1; i++) {
-						tab1[i] = ligne1[i];
-					}
-					tab1[colonneTrou] = ".";
-					for (int i = colonneTrou + 1; i < tab.length; i++) {
-						tab1[i] = ligne1[i];
-					}
-					
-					for (int i = 0; i <= colonneTrou-1; i++) {
-						tab2[i] = ligne2[i];
-					}
-					tab2[colonneTrou] = ".";
-					for (int i = colonneTrou + 1; i < tab.length; i++) {
-						tab2[i] = ligne2[i];
-					}
-					
-					for (int i = 0; i <= colonneTrou-1; i++) {
-						tab[i] = ligne[i];
-					}
-					tab[colonneTrou] = "o";
-					for (int i = colonneTrou + 1; i < tab.length; i++) {
-						tab[i] = ligne[i];
-					}
-					String[][] t = {tab1, tab2, tab};
-					this.ecrireNouvelleGrille(t, ligneTrou -2);*/
 					
 					grille[ligneTrou-2][colonneTrou] = ".";
 					grille[ligneTrou-1][colonneTrou] = ".";
 					grille[ligneTrou][colonneTrou] = "o";
+					
 					numeroCas = 3;
 					return true;
 				}
@@ -268,47 +203,17 @@ public class Grille {
 					String[] ligne2 = this.grille[ligneTrou+2];
 					
 					if(ligne1[colonneTrou].equals("o") && ligne2[colonneTrou].equals("o") && numeroCas != 4) {
-						//System.out.println("MouvementBas");
-						/*for (int i = 0; i <= colonneTrou-1; i++) {
-							tab[i] = ligne[i];
-						}
-						tab[colonneTrou] = "o";
-						for (int i = colonneTrou + 1; i < tab.length; i++) {
-							tab[i] = ligne[i];
-						}
-						
-						for (int i = 0; i <= colonneTrou-1; i++) {
-							tab1[i] = ligne1[i];
-						}
-						tab1[colonneTrou] = ".";
-						for (int i = colonneTrou + 1; i < tab.length; i++) {
-							tab1[i] = ligne1[i];
-						}
-						
-						for (int i = 0; i <= colonneTrou-1; i++) {
-							tab2[i] = ligne2[i];
-						}
-						tab2[colonneTrou] = ".";
-						for (int i = colonneTrou + 1; i < tab.length; i++) {
-							tab2[i] = ligne2[i];
-						}
-						
-						String[][] t = {tab, tab1, tab2};
-						this.ecrireNouvelleGrille(t, ligneTrou);*/
 						
 						grille[ligneTrou][colonneTrou] = "o";
 						grille[ligneTrou+1][colonneTrou] = ".";
 						grille[ligneTrou+2][colonneTrou] = ".";
+						
 						numeroCas = 4;
 						return true;
 					}
 			}
 		return false;
 	}
-	
-	/*public String[][] getNouvelleGrille() {
-		return nouvelleGrille;
-	}*/
 
 	public String[][] getGrille() {
 		return this.grille;
@@ -317,42 +222,9 @@ public class Grille {
 	public void setGrille(String[][] grille) {
 		this.grille = grille;
 	}
-
-	/*public void ecrireNouvelleGrille(String[][] tab, int indiceDebut){
-		
-		for (int i = 0; i < indiceDebut; i++) {
-			this.nouvelleGrille[i] = this.grille[i];
-		}
-		
-		int taille = tab.length;
-		
-		for (int i = indiceDebut; i < indiceDebut + taille; i++) {
-			this.nouvelleGrille[i] = tab[i-indiceDebut];
-		}
-		
-		for (int i = indiceDebut + taille; i < this.grille.length; i++) {
-			this.nouvelleGrille[i] = this.grille[i];
-		}
-		
-		this.grille = nouvelleGrille;
-	}*/
-	
-	
-
-	public int getNbLignes() {
-		return this.nbLignes;
-	}
-
-	public int getNbColonnes() {
-		return this.nbColonnes;
-	}
 	
 	public boolean getFinGrille() {
 		return this.finGrille;
-	}
-	
-	public int getNumeroCas() {
-		return this.numeroCas;
 	}
 
 	public void setFinGrille(boolean finGrille) {
