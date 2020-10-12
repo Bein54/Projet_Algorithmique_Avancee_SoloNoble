@@ -82,7 +82,7 @@ public class SoloNoble {
 				while (!grilleValide && j < this.tablier.getNbColonnes()) {
 					
 					if (this.tablier.grille[i][j].equals(".")) {
-						System.out.println(billes);
+						//System.out.println(billes);
 						
 						if(!grilleValide && (this.tablier.deplacementValide("gauche", i,j))) {
 							this.tablier.deplacerBille("gauche", i,j);
