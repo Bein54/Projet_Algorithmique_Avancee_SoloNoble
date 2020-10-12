@@ -27,61 +27,104 @@ public class SoloNoble {
 
 	public boolean resoudreSoloNoble(int billes) throws IOException {
 		boolean grilleValide = true;
+		/*if (billes == 2) {
+			System.out.println("YESSSSSSSS");
+			String[][] grilleTempo = new String[this.tablier.grille.length][this.tablier.grille[0].length];
+			for (int i = 0; i < this.tablier.grille.length; i++) {
+				for (int j = 0; j < this.tablier.grille[0].length; j++) {
+					System.out.print(this.tablier.grille[i][j]);
+				}
+				System.out.println();
+			}
+			
+		}*/
 		if (billes == 1) {
-			this.ecrireSolution(1);
+			//C'est un merdier
+			System.out.println("YESSSSSSSS");
+			String[][] grilleTempo = new String[this.tablier.nbLignes][this.tablier.nbColonnes];
+			for (int i = 0; i < this.tablier.grille.length; i++) {
+				for (int j = 0; j < this.tablier.grille[0].length; j++) {
+					grilleTempo[i][j] = this.tablier.grille[i][j];
+				}
+			}
+			solutions.put(billes, grilleTempo);
+			for(int i = solutions.size(); i > 0; i--) {
+				String [][] elt = solutions.get(i);
+				for (int j = 0; j < elt.length; j++) {
+					for (int k = 0; k < elt[0].length; k++) {
+						System.out.print(elt[i][j]);
+					}
+					System.out.println();
+				}
+				System.out.println("--------------------------");
+			}
+			//ecrireToutesSolutions();
 		}
 		
 		else {
-			System.out.println("Etape n°" + billes);
-			String[][] grilleActuelle = this.tablier.getGrille();
-			
-			Grille tablierActuel = this.tablier;
-			
-			boolean deplacementReussi = false;
+			int i = 0;
+			int j = 0;
+			boolean deplacementValide = false;
 			grilleValide = false;
 			
-			System.out.println("FinGrilleTrou :"+this.tablier.getFinGrille());
-			this.tablier.chercherTrou();
+			String[][] grilleTempo = new String[this.tablier.grille.length][this.tablier.grille[0].length];
+			for (int a = 0; a < this.tablier.grille.length; a++) {
+				for (int b = 0; b < this.tablier.grille[0].length; b++) {
+					grilleTempo[a][b] = this.tablier.grille[a][b];
+				}
+			}
 			
-			while ((!grilleValide) && !this.tablier.getFinGrille()) {
+			solutions.put(billes, grilleTempo);
+			
+			while (!grilleValide && i < this.tablier.getNbLignes()) {
 				
-				deplacementReussi = this.tablier.deplacerBille();
+				j = 0;
+				while (!grilleValide && j < this.tablier.getNbColonnes()) {
+					
+					if (this.tablier.grille[i][j].equals(".")) {
+						System.out.println(billes);
+						
+						if(!grilleValide && (this.tablier.deplacementValide("gauche", i,j))) {
+							this.tablier.deplacerBille("gauche", i,j);
+							grilleValide = this.resoudreSoloNoble(billes - 1);
+							//System.out.println(grilleValide);
+							if (!grilleValide) {
 
-				while (deplacementReussi && !grilleValide) {
-					
-					tablierActuel = this.tablier;
-					
-					grilleActuelle = this.tablier.getGrille();
-					
-					this.tablier = new Grille(grilleActuelle);
-					
-					grilleValide = this.resoudreSoloNoble(billes - 1);
-					
-					System.out.println("Fin de la grille : " + this.tablier.getFinGrille());
-					
-					System.out.println(grilleValide);
-					
-					if (!grilleValide) {
-						
-						if (this.tablier.getFinGrille()) {
-							this.tablier.setFinGrille(false);
+								this.tablier.retourArriere("gauche", i, j);
+							}
 						}
-						this.tablier = tablierActuel;
 						
-						deplacementReussi = this.tablier.deplacerBille();
+						if(!grilleValide && (this.tablier.deplacementValide("droite", i,j))) {
+							this.tablier.deplacerBille("droite", i,j);
+							grilleValide = this.resoudreSoloNoble(billes - 1);
+							if (!grilleValide) {
+								this.tablier.retourArriere("droite", i, j);
+							}
+						}
 						
+						if(!grilleValide && (this.tablier.deplacementValide("bas", i,j))) {
+							this.tablier.deplacerBille("bas", i,j);
+							grilleValide = this.resoudreSoloNoble(billes - 1);
+							if (!grilleValide) {
+								this.tablier.retourArriere("bas", i, j);
+							}
+						}
+						
+						if(!grilleValide && (this.tablier.deplacementValide("haut", i,j))) {
+							this.tablier.deplacerBille("haut", i,j);
+							grilleValide = this.resoudreSoloNoble(billes - 1);
+							if (!grilleValide) {
+								this.tablier.retourArriere("haut", i, j);
+							}
+						}
+						
+			
 					}
+					j++;
 				}
-				
-				if (!grilleValide) {
-					this.tablier.chercherTrou();
-				}
+				i++;
 			}
 			
-			if(grilleValide) {
-				this.tablier = tablierActuel;
-				this.ecrireSolution(billes);
-			}
 		}
 		return grilleValide;
 	}
@@ -116,7 +159,7 @@ public class SoloNoble {
 	public static void main(String[] args) throws IOException {
 		SoloNoble sn;
 		if (args.length > 0)
-			sn = new SoloNoble(new File(args[0]));
+			sn = new SoloNoble(new File("src/grilles/tablier2.txt"));
 		else {
 			sn = new SoloNoble();
 		}
