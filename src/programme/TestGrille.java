@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grille {
-	
+public class TestGrille {
 	private int nbLignes, nbColonnes;
 	private String[][] grille;
+	private String deplacement;
 	
-	public Grille(String nomFichier) throws IOException {
+	public TestGrille(String nomFichier) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(new File(nomFichier)));
 		String ligne;
 		List<List<String>> l1 = new ArrayList<List<String>>();
@@ -36,9 +36,10 @@ public class Grille {
 		
 		this.nbColonnes = this.grille[0].length;
 		this.nbLignes = this.grille.length;
+		deplacement = "debut";
 	}
 	
-	public Grille() throws IOException {
+	public TestGrille() throws IOException {
 		
 		grille = new String[7][7];
 		
@@ -72,6 +73,7 @@ public class Grille {
 		
 		this.nbColonnes = this.grille[0].length;
 		this.nbLignes = this.grille.length;
+		deplacement = "debut";
 	}
 	
 	public int calculerNombreBilles() {
@@ -86,59 +88,51 @@ public class Grille {
 	}
 	
 	
-	public boolean deplacementValide(String deplacement, int i, int j) {
-		if (deplacement.equals("gauche") && (j+2) < nbColonnes) {
+	public void deplacerBille(int i, int j){
+		
+		//gauche
+		if (deplacement.equals("debut") && (j+2) < nbColonnes) {
 			if(grille[i][j+1].equals("o") && grille[i][j+2].equals("o")) {
-				return true;
+				grille[i][j] = "o";
+				grille[i][j+1] = ".";
+				grille[i][j+2] = ".";
+				deplacement = "gauche";
 			}
 		}
 		
-		if(deplacement.equals("droite") && (j-2)>=0) {
+		//droite
+		else if(!deplacement.equals("bas") && !deplacement.equals("haut") && !deplacement.equals("droite") && (j-2)>=0) {
 			if(grille[i][j-1].equals("o") && grille[i][j-2].equals("o")) {
-				return true;
+				grille[i][j-2] = ".";
+				grille[i][j-1] = ".";
+				grille[i][j] = "o";
+				deplacement = "droite";
 			}
 		}
 		
-		if (deplacement.equals("bas") && (i-2)>= 0) {
-			if(grille[i-1][j].equals("o") && grille[i-2][j].equals("o")) {
-				return true;
-			}
-		}
-		
-		if (deplacement.equals("haut") && (i + 2) < nbLignes) {
+		//haut
+		else if (!deplacement.equals("bas") && !deplacement.equals("haut") && (i + 2) < nbLignes) {
 			if(grille[i+1][j].equals("o") && grille[i+2][j].equals("o")) {
-				return true;
+				grille[i][j] = "o";
+				grille[i+1][j] = ".";
+				grille[i+2][j] = ".";
+				deplacement = "haut";
 			}
 		}
-		return false;
-
-	}
-	
-	public void deplacerBille(String deplacement, int i, int j){
-		switch(deplacement) {
-		case "gauche" :
-			grille[i][j] = "o";
-			grille[i][j+1] = ".";
-			grille[i][j+2] = ".";
-			break;
-		case "droite" :
-			grille[i][j-2] = ".";
-			grille[i][j-1] = ".";
-			grille[i][j] = "o";
-			break;
-		case "haut" :
-			grille[i][j] = "o";
-			grille[i+1][j] = ".";
-			grille[i+2][j] = ".";
-			break;
-		case "bas" :
-			grille[i-2][j] = ".";
-			grille[i-1][j] = ".";
-			grille[i][j] = "o";
-			break;
+		
+		//bas
+		else if (!deplacement.equals("bas") && (i-2)>= 0) {
+			if(grille[i-2][j].equals("o") && grille[i-1][j].equals("o")) {
+				grille[i-2][j] = ".";
+				grille[i-1][j] = ".";
+				grille[i][j] = "o";
+				deplacement = "bas";
+			}
 		}
+		else
+			deplacement = "fin";
 	}
-	public void retourArriere(String deplacement, int i, int j) {
+	public void retourArriere(int i, int j) {
 		switch(deplacement) {
 		case "gauche" :
 			grille[i][j] = ".";
@@ -178,4 +172,14 @@ public class Grille {
 	public int getNbColonnes() {
 		return nbColonnes;
 	}
+
+	public String getDeplacement() {
+		return deplacement;
+	}
+
+	public void setDeplacement(String deplacement) {
+		this.deplacement = deplacement;
+	}
+	
+	
 }

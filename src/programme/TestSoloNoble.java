@@ -1,21 +1,15 @@
 package programme;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeMap;
 
-
-
-public class SoloNoble {
-	
-	private Grille tablier;
+public class TestSoloNoble {
+	private TestGrille tablier;
 	private HashMap<Integer,String[][]> solutions;
 	private int nombreDeplacements, nombreAppelsResoudreSoloNoble;
 	
-	public SoloNoble(String nomFichier) throws IOException {
-		this.tablier = new Grille(nomFichier);
+	public TestSoloNoble(String nomFichier) throws IOException {
+		this.tablier = new TestGrille(nomFichier);
 		this.solutions = new HashMap<Integer, String[][]>();
 		this.nombreDeplacements = 0;
 		this.nombreAppelsResoudreSoloNoble = 0;
@@ -33,10 +27,10 @@ public class SoloNoble {
 		System.out.println(s);
 	}
 	
-	public SoloNoble() throws IOException{
+	public TestSoloNoble() throws IOException{
 		
 		
-		this.tablier = new Grille();
+		this.tablier = new TestGrille();
 		this.solutions = new HashMap<Integer, String[][]>();
 		this.nombreDeplacements = 0;
 		this.nombreAppelsResoudreSoloNoble = 0;
@@ -83,60 +77,19 @@ public class SoloNoble {
 				while (!grilleValide && j < tablier.getNbColonnes()) {
 					
 					if (tablier.getGrille()[i][j].equals(".")) {
+						tablier.setDeplacement("debut");
+						tablier.deplacerBille(i, j);
+						nombreDeplacements++;
 						
-						
-						if(tablier.deplacementValide("droite", i,j)) {
-							
-							tablier.deplacerBille("droite", i,j);
-							nombreDeplacements++;
+						while(!grilleValide && !this.tablier.getDeplacement().equals("fin")) {
 							
 							grilleValide = resoudreSoloNoble(billes - 1);
-							
-							if (!grilleValide) {
-								
-								tablier.retourArriere("droite", i, j);
+							System.out.println(grilleValide);
+							if(!grilleValide) {
+								tablier.retourArriere(i, j);
 								nombreDeplacements++;
-							}
-						}
-						
-						if(!grilleValide && tablier.deplacementValide("bas", i,j)) {
-							
-							tablier.deplacerBille("bas", i,j);
-							nombreDeplacements++;
-							
-							grilleValide = resoudreSoloNoble(billes - 1);
-							
-							if (!grilleValide) {
 								
-								tablier.retourArriere("bas", i, j);
-								nombreDeplacements++;
-							}
-						}
-						
-						if(!grilleValide && tablier.deplacementValide("haut", i,j)) {
-							
-							tablier.deplacerBille("haut", i,j);
-							nombreDeplacements++;
-							
-							grilleValide = resoudreSoloNoble(billes - 1);
-							
-							if (!grilleValide) {
-								
-								tablier.retourArriere("haut", i, j);
-								nombreDeplacements++;
-							}
-						}
-						
-						if(!grilleValide && tablier.deplacementValide("gauche", i,j)) {
-							
-							tablier.deplacerBille("gauche", i,j);
-							nombreDeplacements++;
-							
-							grilleValide = resoudreSoloNoble(billes - 1);
-							
-							if (!grilleValide) {
-								
-								tablier.retourArriere("gauche", i, j);
+								tablier.deplacerBille(i, j);
 								nombreDeplacements++;
 							}
 						}
@@ -173,12 +126,12 @@ public class SoloNoble {
 	}
 
 	public static void main(String[] args) throws IOException {
-		SoloNoble sn;
+		TestSoloNoble sn;
 		if (args.length > 0)
-			sn = new SoloNoble(args[0]);
+			sn = new TestSoloNoble(args[0]);
 		
 		else 
-			sn = new SoloNoble();
+			sn = new TestSoloNoble();
 		
 		double debut = System.currentTimeMillis();
 		boolean resolution = sn.resoudreSoloNoble(sn.getTablier().calculerNombreBilles());
@@ -192,7 +145,7 @@ public class SoloNoble {
 
 	
 
-	public Grille getTablier() {
+	public TestGrille getTablier() {
 		return tablier;
 	}
 }
