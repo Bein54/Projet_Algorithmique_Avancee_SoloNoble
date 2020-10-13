@@ -115,7 +115,7 @@ public class Grille {
 		}
 		
 		if (deplacement.equals("bas") && (i-2)>= 0) {
-			if(grille[i-2][j].equals("o") && grille[i-1][j].equals("o")) {
+			if(grille[i-1][j].equals("o") && grille[i-2][j].equals("o")) {
 				return true;
 			}
 		}
