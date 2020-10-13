@@ -102,7 +102,7 @@ public class Grille {
 	}
 	
 	public boolean deplacementValide(String deplacement, int i, int j) {
-		if (deplacement.equals("gauche") && j+2 < nbColonnes) {
+		if (deplacement.equals("gauche") && (j+2) < nbColonnes) {
 			if(grille[i][j+1].equals("o") && grille[i][j+2].equals("o")) {
 				return true;
 			}
@@ -114,13 +114,13 @@ public class Grille {
 			}
 		}
 		
-		if (deplacement.equals("bas") && i-2>= 0) {
+		if (deplacement.equals("bas") && (i-2)>= 0) {
 			if(grille[i-2][j].equals("o") && grille[i-1][j].equals("o")) {
 				return true;
 			}
 		}
 		
-		if (deplacement.equals("haut") && i + 2 < nbLignes) {
+		if (deplacement.equals("haut") && (i + 2) < nbLignes) {
 			if(grille[i+1][j].equals("o") && grille[i+2][j].equals("o")) {
 				return true;
 			}
@@ -138,48 +138,48 @@ public class Grille {
 			
 		}
 		if(deplacement.equals("droite")) {
-				grille[i][j-2] = ".";
-				grille[i][j-1] = ".";
-				grille[i][j] = "o";
+			grille[i][j-2] = ".";
+			grille[i][j-1] = ".";
+			grille[i][j] = "o";
 		}
 		
 		if (deplacement.equals("bas")) {
-				grille[i-2][j] = ".";
-				grille[i-1][j] = ".";
-				grille[i][j] = "o";
+			grille[i-2][j] = ".";
+			grille[i-1][j] = ".";
+			grille[i][j] = "o";
 		}
 			
 		if (deplacement.equals("haut")) {
-					grille[i][j] = "o";
-					grille[i+1][j] = ".";
-					grille[i+2][j] = ".";
+			grille[i][j] = "o";
+			grille[i+1][j] = ".";
+			grille[i+2][j] = ".";
 		}
 	}
 	public void retourArriere(String deplacement, int i, int j) {
 		if (deplacement.equals("gauche")) {
 				
-				grille[i][j] = ".";
-				grille[i][j+1] = "o";
-				grille[i][j+2] = "o";
+			grille[i][j] = ".";
+			grille[i][j+1] = "o";
+			grille[i][j+2] = "o";
 		}
 		if(deplacement.equals("droite") ){
 			
-				grille[i][j-2] = "o";
-				grille[i][j-1] = "o";
-				grille[i][j] = ".";
+			grille[i][j-2] = "o";
+			grille[i][j-1] = "o";
+			grille[i][j] = ".";
 		}
 		
-			if (deplacement.equals("bas")) {
-					grille[i-2][j] = "o";
-					grille[i-1][j] = "o";
-					grille[i][j] = ".";
-			}
+		if (deplacement.equals("bas")) {
+			grille[i-2][j] = "o";
+			grille[i-1][j] = "o";
+			grille[i][j] = ".";
+		}
 			
-			if (deplacement.equals("haut")) {
-						grille[i][j] = ".";
-						grille[i+1][j] = "o";
-						grille[i+2][j] = "o";
-			}
+		if (deplacement.equals("haut")) {
+			grille[i][j] = ".";
+			grille[i+1][j] = "o";
+			grille[i+2][j] = "o";
+		}
 	}
 
 	public String[][] getGrille() {
@@ -198,7 +198,9 @@ public class Grille {
 		return nbColonnes;
 	}
 
-	
+	public String getCase(int i, int j) {
+		return grille[i][j];
+	}
 	
 	
 	
