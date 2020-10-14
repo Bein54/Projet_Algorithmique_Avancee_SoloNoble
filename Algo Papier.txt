@@ -1,0 +1,42 @@
+fonction nobleSolitaire(tab:tableauChaine[0...n-1][0...n-1])
+début
+ nbbille <- 0
+ pour i allant de 0 à n-1 faire
+  pour y allant de 0 à n-1 faire
+   si tab[i][y] = "o" alors
+    nbbille <- nbbille +1
+   fsi
+  fpour
+ fpour
+ si nbbille = 0 ou nbbille = 1 alors
+  ecrire "Le jeu est terminé"
+ sinon
+  pour i allant de 0 à n-1 faire 
+   pour y allant de 0 à n-1 faire
+    valeurCible<-tab[i][y]
+    si valeurCible = "o" alors
+     si tab[i+1][y] = "o" et tab[i+2][y] = " " alors
+      tab[i+1][y]<- " "
+      valeurCible <- " "
+      tab[i+2][y] <- "o"
+     sinon si tab[i][y+1] = "o" et tab[i][y+2] = " " alors
+               tab[i][y+1]<- " "
+               valeurCible <- " "
+               tab[i][y+2] <- "o"
+              sinon si tab[i-1][y] = "o" et tab[i-2][y] = " " alors
+                        tab[i-1][y]<- " "
+                        valeurCible <- " "
+                        tab[i-2][y] <- "o"
+                       sinon si tab[i][y-1] = "o" et tab[i][y-2] = " " alors
+                                 tab[i][y-1]<- " "
+                                 valeurCible <- " "
+                                 tab[i][y-2] <- "o"
+                                fsi
+                       fsi
+               fsi
+     fsi
+    fpour
+   fpour
+  nobleSolitaire(tab)
+ fsi
+fin                      
