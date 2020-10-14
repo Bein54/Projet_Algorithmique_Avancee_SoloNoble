@@ -40,7 +40,7 @@ public class TestSoloNoble {
 		
 		for (int i = 0; i < tablier.getGrille().length; i++) {
 			for (int j = 0; j < tablier.getGrille()[0].length; j++) {
-				s += tablier.getGrille()[i][j];
+				s += new String(tablier.getGrille()[i][j]);
 			}
 			s += "\n";
 		}
@@ -55,7 +55,7 @@ public class TestSoloNoble {
 		String[][] grilleTempo = new String[this.tablier.getNbLignes()][this.tablier.getNbColonnes()];
 		for (int i = 0; i < this.tablier.getGrille().length; i++) {
 			for (int j = 0; j < this.tablier.getGrille()[0].length; j++) {
-				grilleTempo[i][j] = this.tablier.getGrille()[i][j];
+				grilleTempo[i][j] = new String(this.tablier.getGrille()[i][j]);
 			}
 		}
 		
@@ -67,30 +67,42 @@ public class TestSoloNoble {
 		}
 		
 		else {
+			//System.out.println("Etape n° : "+(16 - billes));
 			int i = 0;
 			int j = 0;
 			grilleValide = false;
-			
 			while (!grilleValide && i < tablier.getNbLignes()) {
 				
 				j = 0;
 				while (!grilleValide && j < tablier.getNbColonnes()) {
 					
 					if (tablier.getGrille()[i][j].equals(".")) {
-						tablier.setDeplacement("debut");
+						//System.out.println("Coordonnées : ("+i+","+j+")");
+						//System.out.println(tablier.getDeplacement());
 						tablier.deplacerBille(i, j);
+						//System.out.println("Premier déplacement : " + tablier.getDeplacement());
 						nombreDeplacements++;
 						
 						while(!grilleValide && !this.tablier.getDeplacement().equals("fin")) {
-							
+							String deplacement = new String(this.tablier.getDeplacement());
+							/*for (int k = 0; k < tablier.getGrille().length; k++) {
+								for (int k2 = 0; k2 < tablier.getGrille().length; k2++) {
+									System.out.print(tablier.getGrille()[k][k2]);
+								}
+								System.out.println();
+							}*/
+							//ystem.out.println(deplacement);
+							tablier.setDeplacement("debut");
 							grilleValide = resoudreSoloNoble(billes - 1);
-							System.out.println(grilleValide);
+							//System.out.println(grilleValide);
 							if(!grilleValide) {
+								tablier.setDeplacement(deplacement);
 								tablier.retourArriere(i, j);
 								nombreDeplacements++;
 								
 								tablier.deplacerBille(i, j);
 								nombreDeplacements++;
+								//System.out.println(tablier.getDeplacement());
 							}
 						}
 					}

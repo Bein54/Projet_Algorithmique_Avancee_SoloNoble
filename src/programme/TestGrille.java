@@ -88,7 +88,9 @@ public class TestGrille {
 	}
 	
 	
-	public void deplacerBille(int i, int j){
+	public boolean deplacerBille(int i, int j){
+		if(this.deplacement.equals("fin"))
+			this.deplacement = "debut";
 		
 		//gauche
 		if (deplacement.equals("debut") && (j+2) < nbColonnes) {
@@ -97,40 +99,49 @@ public class TestGrille {
 				grille[i][j+1] = ".";
 				grille[i][j+2] = ".";
 				deplacement = "gauche";
+				//System.out.println(deplacement);
+				return true;
 			}
 		}
 		
 		//droite
-		else if(!deplacement.equals("bas") && !deplacement.equals("haut") && !deplacement.equals("droite") && (j-2)>=0) {
+		if((deplacement.equals("debut") || deplacement.equals("gauche")) && (j-2)>=0) {
 			if(grille[i][j-1].equals("o") && grille[i][j-2].equals("o")) {
 				grille[i][j-2] = ".";
 				grille[i][j-1] = ".";
 				grille[i][j] = "o";
 				deplacement = "droite";
+				//System.out.println(deplacement);
+				return true;
 			}
 		}
 		
 		//haut
-		else if (!deplacement.equals("bas") && !deplacement.equals("haut") && (i + 2) < nbLignes) {
+		if (!deplacement.equals("bas") && !deplacement.equals("haut") && (i + 2) < nbLignes) {
 			if(grille[i+1][j].equals("o") && grille[i+2][j].equals("o")) {
 				grille[i][j] = "o";
 				grille[i+1][j] = ".";
 				grille[i+2][j] = ".";
 				deplacement = "haut";
+				//System.out.println(deplacement);
+				return true;
 			}
 		}
 		
 		//bas
-		else if (!deplacement.equals("bas") && (i-2)>= 0) {
+		if (!deplacement.equals("bas") && (i-2)>= 0) {
 			if(grille[i-2][j].equals("o") && grille[i-1][j].equals("o")) {
 				grille[i-2][j] = ".";
 				grille[i-1][j] = ".";
 				grille[i][j] = "o";
 				deplacement = "bas";
+				//System.out.println(deplacement);
+				return true;
 			}
 		}
-		else
-			deplacement = "fin";
+		deplacement = "fin";
+		//System.out.println("FIN : "+deplacement);
+		return false;
 	}
 	public void retourArriere(int i, int j) {
 		switch(deplacement) {
