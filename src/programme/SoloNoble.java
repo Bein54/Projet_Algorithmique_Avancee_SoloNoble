@@ -40,10 +40,10 @@ public class SoloNoble {
 	 */
 	public SoloNoble(String nomFichier) throws IOException {
 
-		this.tablier = new Grille(nomFichier);
-		this.solutions = new HashMap<Integer, String[][]>();
-		this.nombreDeplacements = 0;
-		this.nombreAppelsResoudreSoloNoble = 0;
+		tablier = new Grille(nomFichier);
+		solutions = new HashMap<Integer, String[][]>();
+		nombreDeplacements = 0;
+		nombreAppelsResoudreSoloNoble = 0;
 
 		// Message de début
 		String s = "Bienvenue !\n";
@@ -67,10 +67,10 @@ public class SoloNoble {
 	 */
 	public SoloNoble() throws IOException {
 
-		this.tablier = new Grille();
-		this.solutions = new HashMap<Integer, String[][]>();
-		this.nombreDeplacements = 0;
-		this.nombreAppelsResoudreSoloNoble = 0;
+		tablier = new Grille();
+		solutions = new HashMap<Integer, String[][]>();
+		nombreDeplacements = 0;
+		nombreAppelsResoudreSoloNoble = 0;
 
 		// Message de début
 		String s = "Bienvenue !\n";
@@ -111,10 +111,10 @@ public class SoloNoble {
 		// grille change en permanence, à cause de la récursivité avec retour arrière
 		// L'ensemble des grilles contenues dans solutions seraient alors toutes les
 		// mêmes et contiendraient la grille de fin (avec une bille)
-		String[][] grilleTempo = new String[this.tablier.getNbLignes()][this.tablier.getNbColonnes()];
-		for (int i = 0; i < this.tablier.getGrille().length; i++) {
-			for (int j = 0; j < this.tablier.getGrille()[0].length; j++) {
-				grilleTempo[i][j] = this.tablier.getGrille()[i][j];
+		String[][] grilleTempo = new String[tablier.getNbLignes()][tablier.getNbColonnes()];
+		for (int i = 0; i < tablier.getGrille().length; i++) {
+			for (int j = 0; j < tablier.getGrille()[0].length; j++) {
+				grilleTempo[i][j] = tablier.getGrille()[i][j];
 			}
 		}
 
@@ -155,13 +155,13 @@ public class SoloNoble {
 
 						// On continue tant que l'on a pas résolu le Solo Noble
 						// Et que l'on est pas arrivé à la fin des déplacements possibles
-						while (!grilleValide && !this.tablier.getDeplacement().equals("fin")) {
+						while (!grilleValide && !tablier.getDeplacement().equals("fin")) {
 
 							// On incrémente le nombre de déplacements
 							nombreDeplacements++;
 
 							// On récupère le déplacement actuel
-							String deplacement = new String(this.tablier.getDeplacement());
+							String deplacement = new String(tablier.getDeplacement());
 
 							// La variable grilleValide récupère le resultat de la fonction
 							// resoudreSoloNoble(billes - 1)

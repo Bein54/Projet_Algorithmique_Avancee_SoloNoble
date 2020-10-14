@@ -74,7 +74,7 @@ public class Grille {
 		br.close();
 
 		// On instancie la grille
-		this.grille = new String[l1.size()][l1.get(0).size()];
+		grille = new String[l1.size()][l1.get(0).size()];
 
 		// On stocke chaque caractère de la liste dans la grille
 		for (int i = 0; i < l1.size(); i++) {
