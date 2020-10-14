@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * classe gerant les mouvements dans la grille du SoloNoble
  * 
- * @author DEMANGE Alessi - NICOL Benoit
+ * @author DEMANGE Alessi - NICOL Benoit S3C
  *
  */
 public class Grille {

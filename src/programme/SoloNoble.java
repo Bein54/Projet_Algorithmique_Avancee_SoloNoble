@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * classe gerant la resolution d un Solo Noble
  * 
- * @author DEMANGE Alessi - NICOL Benoit
+ * @author DEMANGE Alessi - NICOL Benoit S3C
  *
  */
 public class SoloNoble {
@@ -200,7 +200,7 @@ public class SoloNoble {
 	 */
 	public void ecrireToutesSolutions() {
 
-		System.out.println("\nSolo Noble résolu !\n");
+		System.out.println("\nLe Solo Noble est résolu !\n");
 		System.out.println("Voici les étapes menant à la résolution :\n");
 
 		// On parcourt la table solutions depuis la fin
@@ -249,10 +249,16 @@ public class SoloNoble {
 		// On utilise le constructeur SoloNoble() si il n'y a pas d'arguments
 		else
 			sn = new SoloNoble();
-
+		
+		int nbBilles = sn.getTablier().calculerNombreBilles();
+		
+		System.out.println("\nLe nombre de billes de cette grille est de " + nbBilles + "\n");
+		
 		// On cree une variable récupérant l'heure actuelle en nanosecondes
 		double debut = System.nanoTime();
-		boolean resolution = sn.resoudreSoloNoble(sn.getTablier().calculerNombreBilles());
+		
+		//On appelle la methode de resolution
+		boolean resolution = sn.resoudreSoloNoble(nbBilles);
 
 		// On cree une autre variable récupérant l'heure actuelle en nanosecondes
 		double fin = System.nanoTime();
